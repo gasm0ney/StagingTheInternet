@@ -78,6 +78,8 @@ while(exit == 0 and (time.time() - start_time) < max_time):
     
     # If unison picked, all nodes complete a unison action together
     # Then, all return to phones once finished.
+    # Thoughts: I'm not sure how well this works with literal, verbose, and scan.
+    # Also, there is currently a fixed time of 15 secs for unison actions other than monologue, but this could be random changed
     if(commands[0] == "unison"):
         shuffle(unison_commands)
         playsound('beep-07.mp3')
@@ -111,7 +113,7 @@ while(exit == 0 and (time.time() - start_time) < max_time):
         time.sleep(1)
         issued_command = 1
 
-    # If monologue picked, all nodes recite monologue one word at a time
+    # If monologue picked, one node recites monologue one word at a time
     if(commands[0] == "monologue"):
         shuffle(monologues)
         shuffle(emotions)
