@@ -3,7 +3,7 @@ import time
 from playsound import playsound
 
 # Number of nodes
-chorus_size = 3
+chorus_size = 4
 
 # Possible objects. All have equal probability to be picked
 objects = ["PDF", "your favorite writing tool", "plastic fork", "fidget spinner", "the last dream that you can remember"]
@@ -59,14 +59,14 @@ loop_delay_min = 5
 loop_delay_max = 15
 
 # Maximum amount of time the program will run
-max_time = 240
+max_time = 480
 
 # Set's start time to when the for loop begins
 start_time = time.time()
 
 # Initial delay
 wait = randint(initial_delay_min, initial_delay_max)
-#time.sleep(wait)
+time.sleep(wait)
 
 # Integer used to exit the main while loop
 exit = 0
@@ -88,7 +88,7 @@ while(exit == 0 and (time.time() - start_time) < max_time):
             shuffle(monologues)
             shuffle(emotions)
             print("All nodes in unison -- " + unison_commands[0] + ". Emotion -- " + emotions[0])
-            time.sleep(1)
+            time.sleep(2)
             for i in range(0, len(monologues[0])):
                 print(monologues[0][i])
                 time.sleep(0.5)
@@ -120,7 +120,7 @@ while(exit == 0 and (time.time() - start_time) < max_time):
         shuffle(emotions)
         playsound('beep-07.mp3')
         print("Node #" + str(node_number) + " –- " + commands[0] + ". Emotion -- " + emotions[0])
-        time.sleep(1)
+        time.sleep(2)
         for i in range(0, len(monologues[0])):
             print(monologues[0][i])
             time.sleep(0.5)
