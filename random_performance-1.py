@@ -3,10 +3,10 @@ import time
 from playsound import playsound
 
 # Number of nodes
-chorus_size = 4
+chorus_size = 3
 
 # Possible objects. All have equal probability to be picked
-objects = ["PDF", "your favorite writing tool", "plastic fork"]
+objects = ["PDF", "your favorite writing tool", "plastic fork", "fidget spinner", "the last dream that you can remember"]
 
 # Possible commands. Movement and monologue have a greater probability of being picked
 commands = ["monologue", "monologue", "scan", "verbose", "literal", "copy", "louder", "softer", "unison", "return to backstage", "movement", "movement", "movement", "movement"]
@@ -15,6 +15,7 @@ commands = ["monologue", "monologue", "scan", "verbose", "literal", "copy", "lou
 unison_commands = ["monologue", "scan", "verbose", "literal", "movement", "movement", "movement"]
 
 # Possible monologues. All have equal probability to be picked
+# Thought: Some monologues might be too long. Gertrude Stein is over 2 minutes of a performance with 4 active minutes
 monologues_texts = ["Philosophers can never hope finally to formulate these metaphysical first principles. Weakness of insight and deficiencies of language stand in the way inexorably. Words and phrases must be stretched towards a generality foreign to their ordinary usage; and however such elements of language be stabilized as technicalities, they remain metaphors mutely appealing for an imaginative leap.",
 "Both linear and dialectical causality no longer function, therefore everything is in determination. The center of meaning is empty, therefore we are satellites in lost orbit. We can no longer act like legislator-subjects or be passive like slaves, therefore we are sponges. Images are no longer anchored by representation, therefore they float weightless in hyperspace. Words are no longer univocal, therefore signifiers slip chaotically over each other. A circuit has been created between the real and the imaginary, therefore reality has imploded into the undecidable proximity of hyperreality",
 "Case was twenty-four. At twenty-two, he’d been a cowboy a rustler, one of the best in the Sprawl. He’d been trained by the best, by McCoy Pauley and Bobby Quine, legends in the biz. He’d operated on an almost permanent adrenaline high, a byproduct of youth and proficiency, jacked into a custom cyberspace deck that projected his disembodied consciousness into the con sensual hallucination that was the matrix. A thief he’d worked for other, wealthier thieves, employers who provided the exotic software required to penetrate the bright walls of corporate systems, opening windows into rich fields of data. He’d made the classic mistake, the one he’d sworn he’d never make. He stole from his employers.",
@@ -58,7 +59,7 @@ loop_delay_min = 5
 loop_delay_max = 15
 
 # Maximum amount of time the program will run
-max_time = 300
+max_time = 240
 
 # Set's start time to when the for loop begins
 start_time = time.time()
