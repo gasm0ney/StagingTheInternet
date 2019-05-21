@@ -42,7 +42,7 @@ unison_model = markovify.Text.from_json(model_json)
 # ---------------------------------------------------------------
 
 speech_models = []
-model_names = ["shelley_model.json", "austen_model.json", "zuboff_model.json", "marx_model.json", "heidegger_model.json", "foucault_model.json", "exxon_model.json", "hamlet_model.json"]
+model_names = ["shelley_model.json", "austen_model.json", "zuboff_model.json", "marx_model.json", "heidegger_model.json", "foucault_model.json", "exxon_model.json", "hamlet_model.json", "google_model.json"]
 
 for name in model_names:
     with open(name, "r") as f:
