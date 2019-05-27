@@ -1,9 +1,12 @@
 from random import *
+import random
 import time
 import markovify
 import re
 import nltk
 import json
+import os
+import nltk
 from playsound import playsound
 
 class POSifiedText(markovify.Text):
@@ -57,17 +60,28 @@ for name in model_names:
 # make_sentence_with_start(self, beginning, strict=True, **kwargs):
 
 # Number of nodes
-chorus_size = 6
+chorus_size = 4
+chorus_array = []
+
+for i in range(chorus_size):
+    chorus_array.append("#" + str(i + 1))
 
 shuffle(speech_models)
 
+# Possible starting topics
+topics = ["burn down", "tin", "coltan", "undersea cables", "object oriented ontology", "router", "data transfer"]
+
 # Possible commands. Movement and monologue have a greater probability of being picked
-commands = ["dialogue", "dialogue", "monologue", "scan", "scan", "verbose", "verbose", "literal", "copy", "louder", "softer", "unison", "return to backstage", "movement", "movement", "movement", "movement", "movement"]
+commands = ["dialogue", "dialogue", "monologue", "scan", "scan", "verbose", "literal", "connect", "connect"
+"copy",
+"unison",
+"louder", "softer", "faster", "slower", "return to backstage",
+"movement", "movement", "movement", "movement", "movement", "transfer", "transfer"]
 
 # Commands that can be done in unison
 unison_commands = ["monologue", "scan", "verbose", "literal", "movement", "movement", "movement"]
 
-# Possible movements. All have equal probability to be picked, except for "Dab."
+dynamics = ["slower", "faster", "louder", "softer", "none", "none"]
 
 movements_object = [
 "Become a %s", # Object
@@ -90,9 +104,10 @@ movements_emotion = [
 
 movements_two_emotions = [
 "Oscillate between %s and %s", # Emotion and emotion
-"Show both %s and %s"
+"Show both %s and %s" # Emotion and emotion
 ]
 
+# Possible movements. All have equal probability to be picked, except for "Dab."
 movements_all = [
 "Dab.",
 "Do anything that makes it hard to breathe.",
@@ -111,28 +126,34 @@ emotions = [
 "sadness",
 "love",
 "jealousy",
-"sloth",
+"tiredness",
 "illness",
 "amusement",
-"kindness"
+"kindness",
+"despair",
+"catatonic",
+"disgust",
+"exuberant"
 ]
 
 # Possible emotions. All have equal probability to be picked
-emotions_all = [
-"you have been betrayed",
-"this is the best news you've ever gotten",
-"sing the song of your heartbreak",
-"you are a doctor. break the bad news gently",
-"convince me",
-"squish the audience with your words",
-"you're a stand-up comedian",
-"you're giving safety instructions",
-"question your convictions"] + emotions
+emotions_all = emotions
+
+# [
+# "you have been betrayed",
+# "this is the best news you've ever gotten",
+# "sing the song of your heartbreak",
+# "you are a doctor. break the bad news gently",
+# "convince me",
+# "squish the audience with your words",
+# "you're a stand-up comedian",
+# "you're giving safety instructions",
+# "question your convictions"] + 
 
 objects_escape = ["net", "skin", "mud", "last dream that you can remember"]
 
 # Possible objects. All have equal probability to be picked
-objects_all = ["PDF", "favorite writing tool", "plastic fork", "fidget spinner", "computer mouse", "bacteria"] + objects_escape
+objects_all = ["PDF", "plastic fork", "fidget spinner", "computer mouse", "bacteria", "tin", "coltan", "silicon", "cable"] + objects_escape
 
 noises = [
 "Wind blowing",
@@ -144,6 +165,8 @@ noises = [
 "Bird chirps",
 "Cars passing by"
 ]
+
+parts_of_speech = ["noun", "verb", "adjective", "adverb"]
 
 # Array of what nodes are currently doing
 chorus_states = ["Empty"]
@@ -160,12 +183,16 @@ loop_delay_max = 15
 # Maximum amount of time the program will run
 max_time = 480
 
+playsound('beep-07.mp3')
+shuffle(topics)
+print("Search term -- " + topics[0])
+
 # Set's start time to when the for loop begins
 start_time = time.time()
 
 # Initial delay
 wait = randint(initial_delay_min, initial_delay_max)
-time.sleep(wait)
+# time.sleep(wait)
 
 # Integer used to exit the main while loop
 exit = 0
@@ -324,7 +351,7 @@ while(exit == 0 and (time.time() - start_time) < max_time):
 
     # If a node is active and "return to backstage", "softer", or "louder"
     # selected, issues command to random active node
-    if((commands[0] == "return to backstage" or commands[0] == "louder" or commands[0] == "softer") and "active" in chorus_states):
+    if((commands[0] == "return to backstage" or commands[0] == "louder" or commands[0] == "softer" or commands[0] == "faster" or commands[0] == "slower") and "active" in chorus_states):
         while(chorus_states[node_number] != "active"):
             node_number = randint(1, chorus_size)
         playsound('beep-07.mp3')
@@ -383,14 +410,59 @@ while(exit == 0 and (time.time() - start_time) < max_time):
             print("Node #" + str(node_number) + " –- " + movements_all[0])
         chorus_states[node_number] = "moving"
         issued_command = 1
-
+    
+    if(commands[0] == "transfer"):
+        for i in range(3):
+            shuffle(chorus_array)
+            shuffle(dynamics)
+            playsound('beep-07.mp3')
+            print("Transfer. Dynamic --  "+ dynamics[0] +". -- Order = ", end=" ")
+            for node in chorus_array:
+                print(node + " ", end =" ")
+            print("")
+            time.sleep(10)
+        issued_command = 1
+        playsound('beep-07.mp3')
+        print("All nodes in unison -- Return to backstage")
+        for i in range(1, chorus_size+1):
+            chorus_states[i] = "phone"
+    
+    if(commands[0] == "connect"):
+        playsound('beep-07.mp3')
+        connect_nodes = random.sample(range(1, chorus_size + 1), randint(2, chorus_size-1))
+        shuffle(objects_all)
+        print("Connect. First word -- "+ objects_all[0] +". -- Order =", end=" ")
+        parts_of_speech = ["noun", "verb", "adjective", "adverb"]
+        for node_number in connect_nodes:
+            print(" #" + str(node_number) + " " + parts_of_speech[0] + " ->", end =" ")
+            shuffle(parts_of_speech)
+            # Make "active" so will get dynamics while connected?
+            # Could make "movement" active so will get dynamics too
+            chorus_states[node_number] = "phone"
+        print(" end")
+        time.sleep(randint(30, 50))
+        playsound('beep-07.mp3')
+        print("All nodes in unison -- Return to backstage")
+        issued_command = 1
+    
     if issued_command:
         # Wait time before issuing another command
         wait = randint(loop_delay_min, loop_delay_max)
         time.sleep(wait)
+        # with open(os.path.expanduser("~/Downloads/scraped_text.txt"), "r") as f:
+        #     scraped_text = f.read()
+        #     sentences = nltk.sent_tokenize(scraped_text) #tokenize sentences
+        #     nouns = [] #empty to array to hold all nouns
+        #     for sentence in sentences:
+        #          for word,pos in nltk.pos_tag(nltk.word_tokenize(str(sentence))):
+        #              if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS'):
+        #                  nouns.append(word)
+        #     print(nouns)
+        
         # Thought increase chance of unison near end of performance
         # if (time.time() - start_time) > ((max_time / 3) * 2):
         #     commands.append("unison")
+        
         # Thought: Can safely remove this?
         # 2% chance of quiting
         # if(randint(0,50) == 25):
