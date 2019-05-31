@@ -60,7 +60,7 @@ for name in model_names:
 # make_sentence_with_start(self, beginning, strict=True, **kwargs):
 
 # Number of nodes
-chorus_size = 4
+chorus_size = 9
 chorus_array = []
 
 for i in range(chorus_size):
@@ -69,10 +69,10 @@ for i in range(chorus_size):
 shuffle(speech_models)
 
 # Possible starting topics
-topics = ["burn down", "tin", "coltan", "undersea cables", "object oriented ontology", "router", "data transfer"]
+topics = ["burn down", "tin", "coltan", "undersea cables", "object oriented ontology", "router", "data transfer", "sky net"]
 
 # Possible commands. Movement and monologue have a greater probability of being picked
-commands = ["dialogue", "dialogue", "monologue", "scan", "scan", "verbose", "literal", "connect", "connect"
+commands = ["scan", "scan", "verbose", "literal", "connect", "connect" # "dialogue", "dialogue", "monologue", 
 "copy",
 "unison",
 "louder", "softer", "faster", "slower", "return to backstage",
@@ -81,7 +81,7 @@ commands = ["dialogue", "dialogue", "monologue", "scan", "scan", "verbose", "lit
 # Commands that can be done in unison
 unison_commands = ["monologue", "scan", "verbose", "literal", "movement", "movement", "movement"]
 
-dynamics = ["slower", "faster", "louder", "softer", "none", "none"]
+dynamics = ["none", "none"] #"slower", "faster", "louder", "softer", 
 
 movements_object = [
 "Become a %s", # Object
@@ -153,7 +153,8 @@ emotions_all = emotions
 objects_escape = ["net", "skin", "mud", "last dream that you can remember"]
 
 # Possible objects. All have equal probability to be picked
-objects_all = ["PDF", "plastic fork", "fidget spinner", "computer mouse", "bacteria", "tin", "coltan", "silicon", "cable"] + objects_escape
+objects_all = ["yarn", "eyeballs", "card", "job", "OCD", "textbook", "orange zest", "banana phone", "sushi", "fashion", "puppies", "triple O", "YoutubeHaiku", "Pokėmon", "socks", "androgony",
+"immune system", "amazon", "ASMR", "BDSM", "monkey", "LCD", "dementia", "Kafka", "virtual", "tea", "PDF", "plastic fork", "fidget spinner", "computer mouse", "bacteria", "tin", "coltan", "silicon", "undersea cable"] + objects_escape
 
 noises = [
 "Wind blowing",
@@ -181,18 +182,18 @@ loop_delay_min = 5
 loop_delay_max = 15
 
 # Maximum amount of time the program will run
-max_time = 480
+max_time = 600
 
 playsound('beep-07.mp3')
-shuffle(topics)
-print("Search term -- " + topics[0])
+shuffle(objects_all)
+print("Search term -- " + objects_all[0])
 
 # Set's start time to when the for loop begins
 start_time = time.time()
 
 # Initial delay
 wait = randint(initial_delay_min, initial_delay_max)
-# time.sleep(wait)
+time.sleep(wait)
 
 # Integer used to exit the main while loop
 exit = 0
