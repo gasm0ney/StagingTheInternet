@@ -72,7 +72,7 @@ shuffle(speech_models)
 topics = ["burn down", "tin", "coltan", "undersea cables", "object oriented ontology", "router", "data transfer", "sky net"]
 
 # Possible commands. Movement and monologue have a greater probability of being picked
-commands = ["scan", "scan", "verbose", "literal", "connect", "connect" # "dialogue", "dialogue", "monologue", 
+commands = ["scan", "scan", "verbose", "literal", "connect", "connect", # "dialogue", "dialogue", "monologue", 
 "copy",
 "unison",
 "louder", "softer", "faster", "slower", "return to backstage",
