@@ -62,24 +62,23 @@ for name in model_names:
 # Number of nodes
 chorus_size = 9
 chorus_array = []
+yarn_holder = 0
 
 for i in range(chorus_size):
     chorus_array.append("#" + str(i + 1))
 
 shuffle(speech_models)
 
-# Possible starting topics
-topics = ["burn down", "tin", "coltan", "undersea cables", "object oriented ontology", "router", "data transfer", "sky net"]
-
 # Possible commands. Movement and monologue have a greater probability of being picked
-commands = ["scan", "scan", "verbose", "literal", "connect", "connect", # "dialogue", "dialogue", "monologue", 
+commands = ["scan", "scan", "scan", "scan", "verbose", "literal", "connect", "connect",
 "copy",
 "unison",
 "louder", "softer", "faster", "slower", "return to backstage",
-"movement", "movement", "movement", "movement", "movement", "transfer", "transfer"]
+"movement", "movement", "movement", "movement", "movement", "movement", "movement", "transfer", "transfer",
+"yarn"]
 
 # Commands that can be done in unison
-unison_commands = ["monologue", "scan", "verbose", "literal", "movement", "movement", "movement"]
+unison_commands = ["scan", "verbose", "literal", "movement", "movement", "movement"]
 
 dynamics = ["none", "none"] #"slower", "faster", "louder", "softer", 
 
@@ -109,8 +108,8 @@ movements_two_emotions = [
 
 # Possible movements. All have equal probability to be picked, except for "Dab."
 movements_all = [
-"Dab.",
-"Do anything that makes it hard to breathe.",
+"Dab",
+"Do anything that makes it hard to breathe",
 "Find your breath. Breathe.",
 "awkward turtle",
 "laughing while crying emoji",
@@ -160,6 +159,7 @@ noises = [
 "Wind blowing",
 "Coughing",
 "A clock ticking",
+"Kissing",
 "Waves",
 "Slow humming",
 "Cheerful humming",
@@ -193,7 +193,7 @@ start_time = time.time()
 
 # Initial delay
 wait = randint(initial_delay_min, initial_delay_max)
-time.sleep(wait)
+# time.sleep(wait)
 
 # Integer used to exit the main while loop
 exit = 0
@@ -411,9 +411,9 @@ while(exit == 0 and (time.time() - start_time) < max_time):
             print("Node #" + str(node_number) + " –- " + movements_all[0])
         chorus_states[node_number] = "moving"
         issued_command = 1
-    
+
     if(commands[0] == "transfer"):
-        for i in range(3):
+        for i in range(1):
             shuffle(chorus_array)
             shuffle(dynamics)
             playsound('beep-07.mp3')
@@ -437,34 +437,24 @@ while(exit == 0 and (time.time() - start_time) < max_time):
         for node_number in connect_nodes:
             print(" #" + str(node_number) + " " + parts_of_speech[0] + " ->", end =" ")
             shuffle(parts_of_speech)
-            # Make "active" so will get dynamics while connected?
-            # Could make "movement" active so will get dynamics too
             chorus_states[node_number] = "phone"
         print(" end")
         time.sleep(randint(30, 50))
         playsound('beep-07.mp3')
         print("All nodes in unison -- Return to backstage")
         issued_command = 1
-    
+
+    if(commands[0] == "yarn"):
+        playsound('beep-07.mp3')
+        while node_number == yarn_holder:
+            node_number = randint(1, chorus_size)
+        print("Node #" + str(yarn_holder) + "give yarn to Node #" + str(node_number))
+        yarn_holder = node_number
+        issued_command = 1
+
     if issued_command:
         # Wait time before issuing another command
         wait = randint(loop_delay_min, loop_delay_max)
         time.sleep(wait)
-        # with open(os.path.expanduser("~/Downloads/scraped_text.txt"), "r") as f:
-        #     scraped_text = f.read()
-        #     sentences = nltk.sent_tokenize(scraped_text) #tokenize sentences
-        #     nouns = [] #empty to array to hold all nouns
-        #     for sentence in sentences:
-        #          for word,pos in nltk.pos_tag(nltk.word_tokenize(str(sentence))):
-        #              if (pos == 'NN' or pos == 'NNP' or pos == 'NNS' or pos == 'NNPS'):
-        #                  nouns.append(word)
-        #     print(nouns)
-        
-        # Thought increase chance of unison near end of performance
-        # if (time.time() - start_time) > ((max_time / 3) * 2):
-        #     commands.append("unison")
-        
-        # Thought: Can safely remove this?
-        # 2% chance of quiting
-        # if(randint(0,50) == 25):
-        #     exit = 1
+playsound('beep-07.mp3')
+print("All nodes in unison -- bow")
