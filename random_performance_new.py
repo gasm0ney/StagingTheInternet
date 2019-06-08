@@ -1,5 +1,5 @@
 # scripted by Adam Rivkin, 2019 for Annie Dorsen's Staging the Internet Class
-# Contributions by: Adam Rivkin, Ashleigh Cassemere-Stanfield, Ege Atila, Renee Wherle, Yolanda Dong, Camrick Solario, Arianna Gass, Katie Bevil
+# Contributions by: Adam Rivkin, Ashleigh Cassemere-Stanfield, Ege Atila, Renee Wherle, Yolanda Dong, Camrick Solario, Arianna Gass, Katie Bevil, India Weston
 # License: 
 
 from random import *
@@ -63,6 +63,7 @@ for name in model_names:
 chorus_size = 9
 chorus_array = []
 yarn_holder = 0
+change_triggered = 0
 
 for i in range(chorus_size):
     chorus_array.append("#" + str(i + 1))
@@ -75,10 +76,14 @@ commands = ["scan", "scan", "scan", "scan", "verbose", "literal", "connect", "co
 "unison",
 "louder", "softer", "faster", "slower", "return to backstage",
 "movement", "movement", "movement", "movement", "movement", "movement", "movement", "transfer", "transfer",
-"yarn"]
+"sound"]
 
 # Commands that can be done in unison
-unison_commands = ["scan", "verbose", "literal", "movement", "movement", "movement"]
+unison_commands = ["sound", "scan", "verbose", "literal", "movement", "movement", "movement"]
+
+with open("change_monologue.txt", "r") as f:
+    change_monologue = f.read()
+    change_monologue = change_monologue.split(" ")
 
 # Specifies different kinds of movements 
 movements_object = [
@@ -115,6 +120,7 @@ movements_all = [
 "me gusta meme",
 "become furniture",
 "you are a mime stuck in a box"
+"take a selfie, send it to group chat"
 ] + movements_emotion + movements_two_emotions + movements_two_objects + movements_escape + movements_object
 
 # list of possible emotions 
@@ -141,17 +147,17 @@ objects_escape = ["net", "skin", "mud", "last dream that you can remember"]
 objects_all = ["yarn", "eyeballs", "card", "job", "OCD", "textbook", "orange zest", "banana phone", "sushi", "fashion", "puppies", "triple O", "YoutubeHaiku", "Pokėmon", "socks", "androgony",
 "immune system", "amazon", "ASMR", "BDSM", "monkey", "LCD", "dementia", "Kafka", "virtual", "tea", "PDF", "plastic fork", "fidget spinner", "computer mouse", "bacteria", "tin", "coltan", "silicon", "undersea cable"] + objects_escape
 
-# list of possible noises to be made by nodes
-noises = [
-"Wind blowing",
-"Coughing",
-"A clock ticking",
-"Kissing",
-"Waves",
-"Slow humming",
-"Cheerful humming",
-"Bird chirps",
-"Cars passing by"
+# list of possible sounds to be made by nodes
+sounds = [
+"wind blowing",
+"coughing",
+"a clock ticking",
+"kissing",
+"waves",
+"slow humming",
+"cheerful humming",
+"bird chirps",
+"cars passing by"
 ]
 
 #list of parts of speech for the connect game 
@@ -169,8 +175,11 @@ unison_time = 15
 loop_delay_min = 5
 loop_delay_max = 15
 
-# Maximum amount of time the program will run
-max_time = 600
+# Total amount of time the program will run
+max_time = 1200 #3600
+
+# Amount of time before the program transitions to the second act
+change_time = 60 #2280
 
 playsound('beep-07.mp3')
 shuffle(objects_all)
@@ -215,6 +224,9 @@ while(exit == 0 and (time.time() - start_time) < max_time):
                 shuffle(objects_all)
                 shuffle(emotions)
                 print("Unison -- " + unison_commands[0] + " " + objects_all[0] + ". Emotion -- " + emotions[0])
+            if(unison_commands[0] == "sound"):
+                shuffle(sounds)
+                print("Unison -- Sound " + sounds[0])
             if(unison_commands[0] == "scan"):
                 shuffle(emotions)
                 print("Unison -- " + unison_commands[0] + ". Emotion -- " + emotions[0])
@@ -226,16 +238,16 @@ while(exit == 0 and (time.time() - start_time) < max_time):
                     shuffle(movements_all)
                 if(movements_all[0] in movements_object):
                     shuffle(objects_all)
-                    print("All nodes in unison –- " + (movements_all[0] % objects_all[0]))
+                    print("Unison –- " + (movements_all[0] % objects_all[0]))
                 elif(movements_all[0] in movements_escape):
                     shuffle(objects_escape)
-                    print("All nodes in unison –- " + (movements_all[0] % objects_escape[0]))
+                    print("Unison –- " + (movements_all[0] % objects_escape[0]))
                 elif(movements_all[0] in movements_emotion):
                     shuffle(emotions)
-                    print("All nodes in unison –- " + (movements_all[0] % emotions[0]))
+                    print("Unison –- " + (movements_all[0] % emotions[0]))
                 elif(movements_all[0] in movements_two_emotions):
                     shuffle(emotions)
-                    print("All nodes in unison –- " + (movements_all[0] % (emotions[0], emotions[1])))
+                    print("Unison –- " + (movements_all[0] % (emotions[0], emotions[1])))
                 elif(movements_all[0] in movements_two_objects):
                     shuffle(objects_all)
                     print("Unison –- " + (movements_all[0] % (objects_all[0], objects_all[1])))
@@ -258,10 +270,10 @@ while(exit == 0 and (time.time() - start_time) < max_time):
             node_number2 = randint(1, chorus_size)
             while node_number2 == node_number:
                 node_number2 = randint(1, chorus_size)
-            shuffle(noises)
+            shuffle(sounds)
             time.sleep(3)
             playsound('beep-07.mp3')
-            print("Node " + str(node_number2) + " –- Sound-- " + noises[0])
+            print("Node " + str(node_number2) + " –- Sound-- " + sounds[0])
         # Thought: More time to get ready before monologue?
         time.sleep(4.5)
         new_monologue = ""
@@ -293,10 +305,10 @@ while(exit == 0 and (time.time() - start_time) < max_time):
             node_number3 = randint(1, chorus_size)
             while node_number3 == node_number or node_number3 == node_number2:
                 node_number3 = randint(1, chorus_size)
-            shuffle(noises)
+            shuffle(sounds)
             time.sleep(3.5)
             playsound('beep-07.mp3')
-            print("Node " + str(node_number3) + " –- Sound -- " + noises[0])
+            print("Node " + str(node_number3) + " –- Sound -- " + sounds[0])
         # Thought: More time to get ready before dialogue?
         time.sleep(4.5)
         for i in range(randint(3, 5)):
@@ -392,7 +404,7 @@ while(exit == 0 and (time.time() - start_time) < max_time):
             shuffle(objects_all)
             print("Node " + str(node_number) + " –- " + (movements_all[0] % (objects_all[0], objects_all[1])))
         else:
-            print("Node #" + str(node_number) + " –- " + movements_all[0])
+            print("Node " + str(node_number) + " –- " + movements_all[0])
         chorus_states[node_number] = "moving"
         issued_command = 1
         
@@ -401,7 +413,7 @@ while(exit == 0 and (time.time() - start_time) < max_time):
         for i in range(1):
             shuffle(chorus_array)
             playsound('beep-07.mp3')
-            print("Transfer. "+". -- Order = ", end=" ")
+            print("Transfer -- Order = ", end=" ")
             for node in chorus_array:
                 print(node + " ", end =" ")
             print("")
@@ -432,13 +444,43 @@ while(exit == 0 and (time.time() - start_time) < max_time):
         playsound('beep-07.mp3')
         while node_number == yarn_holder:
             node_number = randint(1, chorus_size)
-        print("Node " + str(yarn_holder) + ", Node" + str(node_number) + "Yarn")
+        print("Node " + str(yarn_holder) + ", Node " + str(node_number) + " Yarn")
         yarn_holder = node_number
+        time.sleep(10)
+        issued_command = 1
+        
+    if(commands[0] == "sound"):
+        playsound('beep-07.mp3')
+        shuffle(sounds)
+        print("Node " + str(node_number) + " –- Sound " + sounds[0])
+        chorus_states[node_number] = "active"
         issued_command = 1
 
     if issued_command:
         # Wait time before issuing another command
         wait = randint(loop_delay_min, loop_delay_max)
         time.sleep(wait)
+        
+    if((time.time() - start_time) > change_time and not change_triggered):
+        change_triggered = 1
+        playsound('beep-07.mp3')
+        print("Unison -- Return to backstage")
+        list(set(commands))
+        commands.append("yarn")
+        time.sleep(1)
+        playsound('beep-07.mp3')
+        print("Node " + str(node_number) + " Yarn")
+        yarn_holder = node_number
+        time.sleep(10)
+        playsound('beep-07.mp3')
+        print("Node " + str(node_number) + " Monologue")
+        time.sleep(2)
+        for i in range(0, len(change_monologue)):
+            print(change_monologue[i])
+            time.sleep(0.5)
+        for i in range(1, chorus_size+1):
+            chorus_states[i] = "phone"
+        shuffle(commands)
+        time.sleep(14)
 playsound('beep-07.mp3')
 print("Unison -- Bow")
