@@ -1,6 +1,6 @@
 # scripted by Adam Rivkin, 2019 for Annie Dorsen's Staging the Internet Class
 # Contributions by: Adam Rivkin, Ashleigh Cassemere-Stanfield, Ege Atila, Renee Wherle, Yolanda Dong, Camrick Solario, Arianna Gass, Katie Bevil, India Weston
-# License: 
+# License: MIT
 
 from random import *
 import random
@@ -407,7 +407,7 @@ while(exit == 0 and (time.time() - start_time) < max_time):
             print("Node " + str(node_number) + " –- " + movements_all[0])
         chorus_states[node_number] = "moving"
         issued_command = 1
-        
+
     # when the randomly selected command is transfer, the nodes will be shuffled and the program will print the nodes in their shuffled order
     if(commands[0] == "transfer"):
         for i in range(1):
