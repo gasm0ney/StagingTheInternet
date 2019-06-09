@@ -60,10 +60,11 @@ for name in model_names:
 
 
 # Customize the number of performers by changing chorus_size
-chorus_size = 9
+chorus_size = 6
 chorus_array = []
 yarn_holder = 0
 change_triggered = 0
+katie_triggered = 0
 
 for i in range(chorus_size):
     chorus_array.append("#" + str(i + 1))
@@ -176,21 +177,21 @@ loop_delay_min = 5
 loop_delay_max = 15
 
 # Total amount of time the program will run
-max_time = 1200 #3600
+max_time = 3600
 
 # Amount of time before the program transitions to the second act
-change_time = 60 #2280
+change_time = 2280
 
 playsound('beep-07.mp3')
 shuffle(objects_all)
 print("Search term -- " + objects_all[0])
 
-# Set's start time to when the for loop begins
+# Sets start time to when the for loop begins
 start_time = time.time()
 
 # Initial delay
 wait = randint(initial_delay_min, initial_delay_max)
-# time.sleep(wait)
+time.sleep(wait)
 
 # Integer used to exit the main while loop
 exit = 0
@@ -460,7 +461,13 @@ while(exit == 0 and (time.time() - start_time) < max_time):
         # Wait time before issuing another command
         wait = randint(loop_delay_min, loop_delay_max)
         time.sleep(wait)
-        
+    
+    if((time.time() - start_time) > (change_time / 2) and not katie_triggered):
+        katie_triggered = 1
+        playsound('beep-07.mp3')
+        print("Katie -- Eat a fruit roll-up")
+        time.sleep(8)
+    
     if((time.time() - start_time) > change_time and not change_triggered):
         change_triggered = 1
         playsound('beep-07.mp3')
@@ -482,5 +489,6 @@ while(exit == 0 and (time.time() - start_time) < max_time):
             chorus_states[i] = "phone"
         shuffle(commands)
         time.sleep(14)
+
 playsound('beep-07.mp3')
 print("Unison -- Bow")
